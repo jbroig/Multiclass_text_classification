@@ -33,7 +33,7 @@ my_tags = ['java','html','asp.net','c#','ruby-on-rails','jquery','mysql','php','
 REPLACE_BY_SPACE_RE = re.compile('[/(){}\[\]\|@,;]')
 BAD_SYMBOLS_RE = re.compile('[^0-9a-z #+_]')
 STOPWORDS = set(stopwords.words('english'))
-
+'''
 def print_plot(index):
     example = df[df.index == index][['post', 'tags']].values[0]
     if len(example) > 0:
@@ -56,6 +56,7 @@ def clean_text(text):
     
 df['post'] = df['post'].apply(clean_text)
 print_plot(30)
+'''
 
 #Number of words after text cleaning and removing stop words
 print(df['post'].apply(lambda x: len(x.split(' '))).sum())
@@ -86,9 +87,12 @@ print('Model: LinearSVC | Accuracy: %s' % accuracy_score(y_pred, y_test))
 #Accuracy using MultinomialNB = 0.74
 #Accuracy using SVM = 0.80
 
-
 print(classification_report(y_test, y_pred,target_names=my_tags))
 
 
+#Create a CSV which compares the real tag with the predicted tag
 
+d = {'tag':y_test, 'predicted_tag':y_pred}
+predictions_df = pd.DataFrame(data=d)
 
+predictions_df.to_csv('predictions.csv')
